@@ -11,6 +11,8 @@ public class CounterApp extends JFrame {
     private static final String COUNTER_NORMAL = "Счетчик в норме";
     private static final String COUNTER_IS_TOO_BIG = "Счетчик слишком большой";
     private static final String COUNTER_IS_TOO_LOW = "Счетчик слишком маленький";
+    private static final String EVEN_NUMBER = "Сейчас четное число";
+    private static final String ODD_NUMBER = "А вот теперь нечетное!";
 
     //camelCase
     //snake_case_text
@@ -35,14 +37,18 @@ public class CounterApp extends JFrame {
         infoPane.setHorizontalAlignment(SwingConstants.CENTER);
         add(infoPane, BorderLayout.NORTH);
 
+        JLabel paneEvenOrOddNumber = new JLabel(EVEN_NUMBER);
+        paneEvenOrOddNumber.setHorizontalAlignment(SwingConstants.CENTER);
+        add(paneEvenOrOddNumber, BorderLayout.SOUTH);
+
 
         //Уменьшение значений
-        JButton decrement = new JButton("<");
+        JButton decrement = new JButton("-5");
         decrement.setFont(font);
         add(decrement, BorderLayout.WEST);
 
         //Увеличение значений
-        JButton increment = new JButton(">");
+        JButton increment = new JButton("+2");
         increment.setFont(font);
         add(increment, BorderLayout.EAST);
 
@@ -50,32 +56,39 @@ public class CounterApp extends JFrame {
         decrement.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                value--;
+                value -= 5;
                 counterValue.setText(String.valueOf(value));
-                if (value < -10) {
-                    infoPane.setText(COUNTER_IS_TOO_LOW);
-                } else {
-                    infoPane.setText(COUNTER_NORMAL);
-                }
+                paneEvenOrOddNumber.setText(checkingEvenOrOddNumber(value));
+                infoPane.setText(checkingCounter(value));
             }
         });
 
         increment.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                value++;
+                value += 2;
                 counterValue.setText(String.valueOf(value));
-                if (value > 10) {
-                    infoPane.setText(COUNTER_IS_TOO_BIG);
-                } else {
-                    infoPane.setText(COUNTER_NORMAL);
-                }
+                paneEvenOrOddNumber.setText(checkingEvenOrOddNumber(value));
+                infoPane.setText(checkingCounter(value));
             }
         });
 
         setVisible(true);
 
+    }
 
+    public static String checkingEvenOrOddNumber(int value) {
+        if (value % 2 == 0) {
+            return EVEN_NUMBER;
+        } else return ODD_NUMBER;
+    }
+
+    public static String checkingCounter(int value) {
+        if (value > 20) {
+            return COUNTER_IS_TOO_BIG;
+        } else if (value < -20) {
+            return COUNTER_IS_TOO_LOW;
+        } else return COUNTER_NORMAL;
     }
 
     public static void main(String[] args) {
